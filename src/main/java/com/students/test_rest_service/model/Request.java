@@ -3,9 +3,13 @@ package com.students.test_rest_service.model;
 import lombok.Builder;
 import lombok.Data;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
+//import jakarta.validation.constraints.Max;
+//import jakarta.validation.constraints.NotBlank;
+//import jakarta.validation.constraints.Size;
 
 @Data
 @Builder
