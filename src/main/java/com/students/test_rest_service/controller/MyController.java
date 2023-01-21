@@ -2,6 +2,7 @@ package com.students.test_rest_service.controller;
 
 import com.students.test_rest_service.model.Request;
 import com.students.test_rest_service.model.Response;
+import com.students.test_rest_service.service.ModifyRequestService;
 import com.students.test_rest_service.service.MyModifyService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +18,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class MyController {
 
     private final MyModifyService myModifyService;
+    private final ModifyRequestService modifyRequestService;
 
     @Autowired
-    public MyController(@Qualifier("ModifyErrorMessage") MyModifyService myModifyService) {
+    public MyController(@Qualifier("ModifyErrorMessage") MyModifyService myModifyService,
+                        ModifyRequestService modifyRequestService) {
         this.myModifyService = myModifyService;
+        this.modifyRequestService = modifyRequestService;
     }
 
     @PostMapping(value = "/feedback")
@@ -28,7 +32,8 @@ public class MyController {
 
         log.info("Входящий request : " + String.valueOf(request));
 
-        Response response = Response.builder().uid(request.getUid())
+        Response response = Response.builder()
+                .uid(request.getUid())
                 .operationUid(request.getOperationUid())
                 .systemTime(request.getSystemTime())
                 .code("success")
@@ -36,7 +41,10 @@ public class MyController {
                 .errorMessage("")
                 .build();
 
+        modifyRequestService.modifyRq(request);
+
         Response responseAfterModify = myModifyService.modify(response);
+
         log.info("Исходящий response : " + String.valueOf(response));
 
         return new ResponseEntity<>(response, HttpStatus.OK);
